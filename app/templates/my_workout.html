@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="page-container">
+
+  <div class="page-header">
+    <h1>My Workout</h1>
+    <p>Your weekly schedule</p>
+  </div>
+
+  <div class="schedule-container">
+
+    {% for day in schedule %}
+    <div class="schedule-day">
+
+      <div class="schedule-day-header">
+        <span class="schedule-day-title">{{ day.name }}</span>
+        <span class="schedule-day-count">{{ day.workouts|length }} workouts</span>
+      </div>
+
+      <ul class="schedule-workout-list">
+
+        {% for workout in day.workouts %}
+        <li class="schedule-workout-item">
+          <span class="schedule-workout-icon">🏋️</span>
+          <div>
+            <div class="schedule-workout-name">{{ workout.name }}</div>
+            <div class="schedule-workout-meta">{{ workout.sets }} sets · {{ workout.reps }} reps · {{ workout.category }}</div>
+          </div>
+          <form method="POST" action="/delete-workout/{{ workout.id }}">
+            <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+          </form>
+        </li>
+        {% endfor %}
+
+      </ul>
+
+      {% if day.workouts|length == 0 %}
+      <div class="schedule-empty">
+        No workouts — <a href="/browse">browse to add some</a>
+      </div>
+      {% endif %}
+
+    </div>
+    {% endfor %}
+
+  </div>
+
+</div>
+
+{% endblock %}

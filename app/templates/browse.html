@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="page-container">
+
+    <div class="page-header">
+        <h1>Browse Workouts</h1>
+        <p>Find exercises and add them to your routine</p>
+    </div>
+
+    <div class="search-bar">
+        <span class="search-icon">🔍</span>
+        <input type="text" name="search" placeholder="Search workouts e.g. bench press...">
+    </div>
+
+    <div class="filter-pills">
+        <button class="filter-pill active">All</button>
+        <button class="filter-pill">Arms</button>
+        <button class="filter-pill">Legs</button>
+        <button class="filter-pill">Core</button>
+        <button class="filter-pill">Chest</button>
+        <button class="filter-pill">Back</button>
+        <button class="filter-pill">Cardio</button>
+    </div>
+
+    <div class="workout-grid">
+
+        {% for workout in workouts %}
+        <div class="workout-card">
+            <button class="workout-card-menu">•••</button>
+            <div class="workout-card-icon">🏋️</div>
+            <div class="workout-card-name">{{ workout.name }}</div>
+            <div class="workout-card-meta">{{ workout.sets }} sets · {{ workout.reps }} reps</div>
+            <span class="workout-card-tag">{{ workout.category }}</span>
+        </div>
+        {% endfor %}
+
+    </div>
+
+    {% if workouts|length == 0 %}
+    <div class="empty-state">
+        <div class="empty-state-icon">🔍</div>
+        <h3>No workouts found</h3>
+        <p>Try a different search or filter</p>
+    </div>
+    {% endif %}
+
+</div>
+
+{% endblock %}

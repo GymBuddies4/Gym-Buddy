@@ -1,7 +1,3 @@
-Put this in 
-
-App/Static/css/app.css
-
 /* ============================================
    WORKOUT REMIXER — Design System
    Font: Poppins (Google Fonts)
@@ -704,7 +700,6 @@ p {
 .login-footer a:hover {
   color: var(--gold-light);
 }
-<<<<<<< HEAD
 
 /* ============================================
    ALERTS / FLASH MESSAGES
@@ -796,5 +791,3 @@ p {
     padding: 0.3rem 0.75rem;
   }
 }
-=======
->>>>>>> 9ee009f78717319f6adb319bff6047e025b34f16

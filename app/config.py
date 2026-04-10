@@ -1,5 +1,8 @@
 from pydantic_settings import BaseSettings, SettingsConfigDict
 from functools import lru_cache
+import os
+
+API_NINJAS_KEY = os.getenv("API_NINJAS_KEY")
 
 @lru_cache
 def get_settings():
@@ -18,4 +21,7 @@ class Settings(BaseSettings):
     db_pool_timeout:int=10
     db_pool_recycle:int=10
     
-    model_config = SettingsConfigDict(env_file=".env")
+    model_config = SettingsConfigDict(
+    env_file=".env",
+    extra="ignore"   
+)

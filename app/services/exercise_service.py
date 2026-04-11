@@ -4,12 +4,14 @@ try:
 except ImportError:
     requests = None
 from fastapi import HTTPException
-from app.config import API_NINJAS_KEY
 
 API_NINJAS_URL = "https://api.api-ninjas.com/v1/exercises"
 
 
 def fetch_exercises(muscle: str):
+    if requests is None:
+        raise HTTPException(status_code=500, detail="Requests library not available")
+
     api_key = os.getenv("API_NINJAS_KEY")
 
     if not api_key:

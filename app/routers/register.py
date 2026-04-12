@@ -7,12 +7,14 @@ from app.repositories.user import UserRepository
 from app.utilities.flash import flash
 from . import router, templates
 
-# View route (loads the page)
 @router.get("/register", response_class=HTMLResponse)
 async def register_view(request: Request):
     return templates.TemplateResponse(
-        request=request, 
+        request=request,
         name="register.html",
+        context={
+            "hide_navbar": True
+        }
     )
 
 # Action route (performs an action)

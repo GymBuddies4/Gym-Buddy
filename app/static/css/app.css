@@ -6,11 +6,6 @@
   --gold-dark: #A07830;
   --gold-subtle: rgba(201, 168, 76, 0.12);
 
-  --bg: #F7F6F2;
-  --surface: #FFFFFF;
-  --surface-2: #F0EDE6;
-  --border: #E4E0D8;
-
   --dark-bg: #0D0D0D;
   --dark-surface: rgba(10, 10, 10, 0.72);
   --dark-border: rgba(201, 168, 76, 0.3);
@@ -19,7 +14,6 @@
   --text-secondary: #6B6560;
   --text-muted: #A09890;
   --text-on-dark: #F5F2EC;
-  --text-on-gold: #1A1814;
 
   --danger: #C0392B;
   --danger-light: #FDECEA;
@@ -29,15 +23,14 @@
   --radius-lg: 20px;
   --radius-pill: 999px;
 
-  --shadow-card: 0 2px 12px rgba(0,0,0,0.07), 0 1px 3px rgba(0,0,0,0.05);
-  --shadow-hover: 0 8px 24px rgba(0,0,0,0.12), 0 2px 6px rgba(0,0,0,0.07);
+  --shadow-hover: 0 8px 24px rgba(0,0,0,0.12);
   --shadow-gold: 0 4px 20px rgba(201, 168, 76, 0.25);
 
   --transition: 0.2s ease;
   --font: 'Poppins', sans-serif;
 }
 
-*, *::before, *::after {
+* {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
@@ -45,185 +38,50 @@
 
 html {
   font-size: 16px;
-  scroll-behavior: smooth;
 }
 
 body {
   font-family: var(--font);
-  background-color: var(--bg);
-  color: var(--text-primary);
-  line-height: 1.6;
-  -webkit-font-smoothing: antialiased;
+  background: var(--dark-bg);
+  color: var(--text-on-dark);
 }
 
+/* LINKS */
 a {
-  color: var(--gold-dark);
+  color: var(--gold);
   text-decoration: none;
-  transition: color var(--transition);
 }
 
-a:hover {
-  color: var(--gold);
-}
-
-img {
-  max-width: 100%;
-  display: block;
-}
-
-h1, h2, h3, h4, h5, h6 {
-  font-family: var(--font);
-  font-weight: 600;
-  line-height: 1.25;
-  color: var(--text-primary);
-}
-
-h1 { font-size: 2rem; }
-h2 { font-size: 1.5rem; }
-h3 { font-size: 1.25rem; }
-h4 { font-size: 1rem; }
-
-p {
-  color: var(--text-secondary);
-  font-size: 0.9375rem;
-}
-
-.text-muted {
-  color: var(--text-muted);
-  font-size: 0.875rem;
-}
-
-.text-gold {
-  color: var(--gold);
-}
-
-.navbar {
-  background-color: var(--surface);
-  border-bottom: 1px solid var(--border);
-  padding: 0 2rem;
-  height: 60px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  position: sticky;
-  top: 0;
-  z-index: 100;
-  box-shadow: 0 1px 8px rgba(0,0,0,0.06);
-}
-
-.navbar-brand {
-  font-size: 1.2rem;
-  font-weight: 700;
-  color: var(--text-primary);
-}
-
-.navbar-brand span {
-  color: var(--gold);
-}
-
-.navbar-nav {
-  display: flex;
-  align-items: center;
-  gap: 0.25rem;
-  list-style: none;
-}
-
-.navbar-nav .nav-link {
-  font-size: 0.9rem;
-  font-weight: 500;
-  color: var(--text-secondary);
-  padding: 0.4rem 0.9rem;
-  border-radius: var(--radius-pill);
-}
-
-.navbar-nav .nav-link:hover,
-.navbar-nav .nav-link.active {
-  color: var(--text-primary);
-  background-color: var(--gold-subtle);
-}
-
-.btn {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  font-family: var(--font);
-  font-size: 0.875rem;
-  font-weight: 500;
-  padding: 0.5rem 1.25rem;
-  border-radius: var(--radius-pill);
-  border: none;
-  cursor: pointer;
-  transition: all var(--transition);
-}
-
-.btn-primary {
-  background-color: var(--gold);
-  color: var(--text-on-gold);
-}
-
-.btn-primary:hover {
-  background-color: var(--gold-light);
-}
-
-.btn-block {
-  width: 100%;
-}
-
-.form-group {
-  display: flex;
-  flex-direction: column;
-  gap: 0.4rem;
-  margin-bottom: 1rem;
-}
-
-.form-label {
-  font-size: 0.85rem;
-  font-weight: 500;
-  color: var(--text-secondary);
-}
-
-.form-control {
-  font-family: var(--font);
-  font-size: 0.9rem;
-  padding: 0.6rem 1rem;
-  border: 1.5px solid var(--border);
-  border-radius: var(--radius-md);
-  background-color: var(--surface);
-  color: var(--text-primary);
-}
+/* ================= LOGIN + REGISTER ================= */
 
 .login-page {
   min-height: 100vh;
-  background-size: cover;
-  background-position: center;
   display: flex;
   align-items: center;
   justify-content: center;
   position: relative;
+
+  background-size: cover;
+  background-position: center;
 }
 
 .login-page::before {
-  content: '';
+  content: "";
   position: absolute;
   inset: 0;
-  background: linear-gradient(
-    135deg,
-    rgba(0, 0, 0, 0.45),
-    rgba(0, 0, 0, 0.15)
-  );
-  z-index: 0;
+  background: rgba(0,0,0,0.65);
 }
 
 .login-card {
   position: relative;
   z-index: 1;
   background: var(--dark-surface);
-  backdrop-filter: blur(16px);
   border: 1px solid var(--dark-border);
   border-radius: var(--radius-lg);
-  padding: 2.75rem 2.5rem;
+  padding: 2.5rem;
   width: 100%;
   max-width: 420px;
+  backdrop-filter: blur(16px);
 }
 
 .login-title {
@@ -231,60 +89,175 @@ p {
   font-size: 2rem;
   font-weight: 700;
   color: var(--gold);
-  margin-bottom: 0.35rem;
+  margin-bottom: 0.3rem;
 }
 
 .login-subtitle {
   text-align: center;
-  font-size: 0.8375rem;
-  color: rgba(245, 242, 236, 0.6);
-  margin-bottom: 2rem;
+  font-size: 0.85rem;
+  color: rgba(245,242,236,0.6);
+  margin-bottom: 1.5rem;
 }
 
-.login-card .form-control {
-  background-color: rgba(255,255,255,0.06);
-  border-color: rgba(255,255,255,0.12);
-  color: var(--text-on-dark);
-}
+/* ================= FORMS ================= */
 
-.login-card .form-label {
-  color: rgba(245, 242, 236, 0.7);
-}
-
-.login-footer {
-  text-align: center;
-  margin-top: 1.5rem;
-  font-size: 0.8375rem;
-  color: rgba(245, 242, 236, 0.5);
-}
-
-.alert {
-  padding: 0.75rem 1rem;
-  border-radius: var(--radius-md);
-  font-size: 0.875rem;
+.form-group {
   margin-bottom: 1rem;
 }
 
-.alert-danger {
-  background-color: var(--danger-light);
+.form-label {
+  font-size: 0.85rem;
+  color: rgba(245,242,236,0.7);
+}
+
+.form-control {
+  width: 100%;
+  padding: 0.65rem 1rem;
+  border-radius: var(--radius-md);
+  border: 1px solid rgba(255,255,255,0.15);
+  background: rgba(255,255,255,0.06);
+  color: white;
+}
+
+.form-control:focus {
+  outline: none;
+  border-color: var(--gold);
+}
+
+/* ================= BUTTONS ================= */
+
+.btn {
+  padding: 0.65rem 1rem;
+  border-radius: var(--radius-pill);
+  border: none;
+  cursor: pointer;
+  font-weight: 500;
+}
+
+.btn-primary {
+  background: var(--gold);
+  color: black;
+}
+
+.btn-danger {
+  background: transparent;
+  border: 1px solid var(--danger);
   color: var(--danger);
 }
 
+/* ================= PAGE LAYOUT ================= */
+
 .page-container {
-  max-width: 1100px;
-  margin: 0 auto;
-  padding: 2rem 1.5rem;
+  padding: 2rem;
 }
 
-.workout-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-  gap: 1rem;
+/* ================= MY WORKOUT ================= */
+
+.schedule-container {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
 }
 
-.workout-card {
-  background-color: var(--surface);
-  border: 1px solid var(--border);
+.schedule-day {
+  background: var(--dark-surface);
+  border: 1px solid var(--dark-border);
   border-radius: var(--radius-md);
-  padding: 1.25rem 1rem;
+  overflow: hidden;
+}
+
+.schedule-day-header {
+  padding: 0.75rem 1rem;
+  background: rgba(255,255,255,0.05);
+  display: flex;
+  justify-content: space-between;
+}
+
+.schedule-workout-list {
+  list-style: none;
+}
+
+.schedule-workout-item {
+  display: flex;
+  gap: 0.75rem;
+  padding: 0.9rem 1rem;
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+}
+
+.schedule-workout-item:hover {
+  background: rgba(201,168,76,0.1);
+}
+
+.schedule-workout-name {
+  color: white;
+  font-weight: 500;
+}
+
+.schedule-workout-meta {
+  font-size: 0.8rem;
+  color: rgba(255,255,255,0.6);
+}
+
+.schedule-empty {
+  padding: 1rem;
+  text-align: center;
+  color: rgba(255,255,255,0.5);
+}
+
+/* ================= ALERTS ================= */
+
+.alert {
+  padding: 0.75rem;
+  border-radius: var(--radius-md);
+  margin-top: 1rem;
+}
+
+.alert-danger {
+  background: rgba(192,57,43,0.15);
+  color: #ff6b6b;
+}
+
+/* ================= RESPONSIVE ================= */
+
+@media (max-width: 768px) {
+  .login-card {
+    margin: 1rem;
+    padding: 2rem;
+  }
+}
+
+.navbar {
+  background: var(--dark-surface);
+  border-bottom: 1px solid var(--dark-border);
+  padding: 0 1.5rem;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.navbar-brand {
+  color: var(--gold);
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.navbar-nav {
+  display: flex;
+  gap: 1rem;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.navbar-nav .nav-link {
+  color: rgba(255,255,255,0.7);
+  text-decoration: none;
+  padding: 0.4rem 0.8rem;
+  border-radius: 999px;
+}
+
+.navbar-nav .nav-link:hover {
+  background: rgba(201,168,76,0.15);
+  color: var(--gold);
 }

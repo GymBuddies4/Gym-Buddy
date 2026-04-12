@@ -3,7 +3,6 @@ from fastapi.responses import HTMLResponse, RedirectResponse
 from app.dependencies import SessionDep
 from app.dependencies.auth import AuthDep
 from app.repositories.schedule import ScheduleRepository
-from app.models.schedule import ScheduleRepository
 from app.models.schedule import Schedule
 from . import router, templates
 
@@ -55,7 +54,7 @@ async def add_to_schedule(
 @router.post("/delete-workout/{schedule_id}")
 async def delete_from_schedule(
     request: Request,
-    schedule_id: id,
+    schedule_id: int,
     user: AuthDep,
     db: SessionDep,
 ):

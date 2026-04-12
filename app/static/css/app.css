@@ -606,8 +606,8 @@ p {
   inset: 0;
   background: linear-gradient(
     135deg,
-    rgba(240, 221, 184, 0.2) 0%,
-    rgba(15, 11, 4, 0.2) 100%
+    rgba(54, 52, 52, 0.75) 0%,
+    rgba(70, 67, 61, 0.1) 100%
   );
   z-index: 0;
 }

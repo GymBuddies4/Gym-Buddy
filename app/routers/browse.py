@@ -5,13 +5,58 @@ from app.services.exercise_service import search_exercises
 
 router = APIRouter()
 
+
+def filter_exercises(exercises, query: Optional[str]):
+    if not query:
+        return exercises
+
+    query = query.lower()
+    return [
+        ex for ex in exercises
+        if query in ex["name"].lower()
+    ]
+
+
 @router.get("/browse")
 def browse_page(
     request: Request,
     muscle: Optional[str] = Query(default=None),
     type: Optional[str] = Query(default=None),
+    q: Optional[str] = Query(default=None),
 ):
-    exercises = search_exercises(muscle=muscle, exercise_type=type)
+    
+    if muscle or type:
+        exercises = search_exercises(muscle=muscle, exercise_type=type)
+
+    else:
+        muscles = [
+            "chest",
+            "back",
+            "biceps",
+            "triceps",
+            "quadriceps",
+            "hamstrings",
+            "abdominals",
+        ]
+
+        exercises = []
+        for m in muscles:
+            try:
+                exercises += search_exercises(muscle=m)
+            except:
+                pass
+
+        seen = set()
+        unique_exercises = []
+        for ex in exercises:
+            name = ex["name"]
+            if name not in seen:
+                seen.add(name)
+                unique_exercises.append(ex)
+
+        exercises = unique_exercises
+
+    exercises = filter_exercises(exercises, q)
 
     return templates.TemplateResponse(
         request=request,
@@ -21,5 +66,6 @@ def browse_page(
             "exercises": exercises,
             "muscle": muscle,
             "type": type,
+            "q": q,
         },
     )

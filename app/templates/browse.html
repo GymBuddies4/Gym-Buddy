@@ -8,40 +8,75 @@
         <p>Find exercises and add them to your routine</p>
     </div>
 
-    <div class="search-bar">
-        <span class="search-icon">🔍</span>
-        <input type="text" name="search" placeholder="Search workouts e.g. bench press...">
-    </div>
-
-    <div class="filter-pills">
-        <button class="filter-pill active">All</button>
-        <button class="filter-pill">Arms</button>
-        <button class="filter-pill">Legs</button>
-        <button class="filter-pill">Core</button>
-        <button class="filter-pill">Chest</button>
-        <button class="filter-pill">Back</button>
-        <button class="filter-pill">Cardio</button>
-    </div>
+    <form method="get" action="/browse">
+        <div class="filter-pills">
+            <button type="submit" name="muscle" value="" class="filter-pill {% if not muscle and not type %}active{% endif %}">All</button>
+            <button type="submit" name="muscle" value="biceps" class="filter-pill {% if muscle == 'biceps' %}active{% endif %}">Arms</button>
+            <button type="submit" name="muscle" value="quadriceps" class="filter-pill {% if muscle == 'quadriceps' %}active{% endif %}">Legs</button>
+            <button type="submit" name="muscle" value="abdominals" class="filter-pill {% if muscle == 'abdominals' %}active{% endif %}">Core</button>
+            <button type="submit" name="muscle" value="chest" class="filter-pill {% if muscle == 'chest' %}active{% endif %}">Chest</button>
+            <button type="submit" name="muscle" value="middle_back" class="filter-pill {% if muscle == 'middle_back' %}active{% endif %}">Back</button>
+            <button type="submit" name="type" value="cardio" class="filter-pill {% if type == 'cardio' %}active{% endif %}">Cardio</button>
+        </div>
+    </form>
 
     <div class="workout-grid">
-
-        {% for workout in workouts %}
+        {% for exercise in exercises %}
         <div class="workout-card">
-            <button class="workout-card-menu">•••</button>
             <div class="workout-card-icon">🏋️</div>
-            <div class="workout-card-name">{{ workout.name }}</div>
-            <div class="workout-card-meta">{{ workout.sets }} sets · {{ workout.reps }} reps</div>
-            <span class="workout-card-tag">{{ workout.category }}</span>
+            <div class="workout-card-name">{{ exercise.name }}</div>
+            <div class="workout-card-meta">
+                {{ exercise.muscle or 'Unknown muscle' }} · {{ exercise.difficulty or 'Unknown difficulty' }}
+            </div>
+            <span class="workout-card-tag">{{ exercise.type or 'General' }}</span>
+
+            {% if exercise.instructions %}
+            <p class="workout-card-description">
+                {{ exercise.instructions[:120] ~ '...' if exercise.instructions|length > 120 else exercise.instructions }}
+            </p>
+            {% endif %}
+
+            <form method="post" action="/my-workout/add" class="add-workout-form">
+                <input type="hidden" name="exercise_name" value="{{ exercise.name }}">
+                <input type="hidden" name="muscle" value="{{ exercise.muscle or '' }}">
+
+                <div class="form-group">
+                    <label for="day_of_week_{{ loop.index }}">Day</label>
+                    <select name="day_of_week" id="day_of_week_{{ loop.index }}" required>
+                        <option value="">Select day</option>
+                        <option value="Sunday">Sunday</option>
+                        <option value="Monday">Monday</option>
+                        <option value="Tuesday">Tuesday</option>
+                        <option value="Wednesday">Wednesday</option>
+                        <option value="Thursday">Thursday</option>
+                        <option value="Friday">Friday</option>
+                        <option value="Saturday">Saturday</option>
+                    </select>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="sets_{{ loop.index }}">Sets</label>
+                        <input type="number" name="sets" id="sets_{{ loop.index }}" min="1" placeholder="3">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="reps_{{ loop.index }}">Reps</label>
+                        <input type="text" name="reps" id="reps_{{ loop.index }}" placeholder="10-12">
+                    </div>
+                </div>
+
+                <button type="submit" class="add-workout-btn">Add to Routine</button>
+            </form>
         </div>
         {% endfor %}
-
     </div>
 
-    {% if workouts|length == 0 %}
+    {% if not exercises %}
     <div class="empty-state">
         <div class="empty-state-icon">🔍</div>
         <h3>No workouts found</h3>
-        <p>Try a different search or filter</p>
+        <p>Choose a filter above to load exercises</p>
     </div>
     {% endif %}
 

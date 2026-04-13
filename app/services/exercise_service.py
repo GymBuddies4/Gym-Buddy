@@ -1,34 +1,33 @@
-import os
-try:
-    import requests
-except ImportError:
-    requests = None
+import requests
 from fastapi import HTTPException
+from app.config import get_settings
 
-API_NINJAS_URL = "https://api.api-ninjas.com/v1/exercises"
+API_URL = "https://api.api-ninjas.com/v1/exercises"
 
-
-def fetch_exercises(muscle: str):
-    if requests is None:
-        raise HTTPException(status_code=500, detail="Requests library not available")
-
-    api_key = os.getenv("API_NINJAS_KEY")
-
-    if not api_key:
-        raise HTTPException(status_code=500, detail="API key not configured")
+def search_exercises(muscle: str | None = None, exercise_type: str | None = None):
+    settings = get_settings()
 
     headers = {
-        "X-Api-Key": api_key
+        "X-Api-Key": settings.API_NINJAS_KEY
     }
 
-    params = {
-        "muscle": muscle
-    }
+    params = {}
+    if muscle:
+        params["muscle"] = muscle.strip().lower()
+
+    if exercise_type:
+        params["type"] = exercise_type.strip().lower()
 
     try:
-        response = requests.get(API_NINJAS_URL, headers=headers, params=params, timeout=10)
-        response.raise_for_status()
-    except requests.RequestException:
-        raise HTTPException(status_code=502, detail="Failed to fetch exercises from external API")
+        response = requests.get(API_URL, headers=headers, params=params, timeout=10)
 
-    return response.json()
+        if response.status_code != 200:
+            raise HTTPException(
+                status_code=response.status_code,
+                detail=f"API Ninjas error {response.status_code}: {response.text}"
+            )
+
+        return response.json()
+
+    except requests.RequestException as e:
+        raise HTTPException(status_code=502, detail=f"Failed to fetch exercises: {str(e)}")

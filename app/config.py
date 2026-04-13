@@ -9,6 +9,7 @@ def get_settings():
     return Settings()
 
 class Settings(BaseSettings):
+    API_NINJAS_KEY: str
     database_uri: str
     secret_key: str
     env: str

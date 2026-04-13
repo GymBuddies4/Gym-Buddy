@@ -15,7 +15,7 @@
 
       <div class="schedule-day-header">
         <span class="schedule-day-title">{{ day.name }}</span>
-        <span class="schedule-day-count">{{ day.workouts|length }} workouts</span>
+        <span class="schedule-day-count">{{ day.workouts|length }} workout{{ day.workouts|length != 1 and 's' or '' }}</span>
       </div>
 
       <ul class="schedule-workout-list">
@@ -24,8 +24,12 @@
         <li class="schedule-workout-item">
           <span class="schedule-workout-icon">🏋️</span>
           <div>
-            <div class="schedule-workout-name">{{ workout.name }}</div>
-            <div class="schedule-workout-meta">{{ workout.sets }} sets · {{ workout.reps }} reps · {{ workout.category }}</div>
+            {# ✅ Fixed: exercise_name not name #}
+            <div class="schedule-workout-name">{{ workout.exercise_name }}</div>
+            {# ✅ Fixed: muscle not category #}
+            <div class="schedule-workout-meta">
+              {% if workout.sets %}{{ workout.sets }} sets{% endif %}{% if workout.sets and workout.reps %} · {% endif %}{% if workout.reps %}{{ workout.reps }} reps{% endif %}{% if workout.muscle %} · {{ workout.muscle }}{% endif %}
+            </div>
           </div>
           <form method="POST" action="/delete-workout/{{ workout.id }}">
             <button type="submit" class="btn btn-danger btn-sm">Delete</button>

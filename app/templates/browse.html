@@ -84,16 +84,35 @@
 
 <script>
 
-const saved = JSON.parse(localStorage.getItem("savedExercises") || "{}");
+let saved = {};
 
-document.querySelectorAll(".workout-card").forEach(card => {
-    const name = card.dataset.name;
-    if (saved[name]) {
-        const btn = card.querySelector(".add-workout-btn");
-        btn.innerText = "Added ✓";
-        btn.classList.add("added");
+async function loadSavedState() {
+    try {
+        const res = await fetch("/my-workout/list");
+        if (res.ok) {
+            const savedNames = await res.json();
+            savedNames.forEach(name => {
+                saved[name] = true;
+            });
+        } else {
+            localStorage.removeItem("savedExercises");
+        }
+    } catch (e) {
+        saved = JSON.parse(localStorage.getItem("savedExercises") || "{}");
     }
-});
+
+    document.querySelectorAll(".workout-card").forEach(card => {
+        const name = card.dataset.name;
+        if (saved[name]) {
+            const btn = card.querySelector(".add-workout-btn");
+            btn.innerText = "Added ✓";
+            btn.classList.add("added");
+            btn.disabled = true;
+        }
+    });
+}
+
+loadSavedState();
 
 document.querySelectorAll(".ajax-form").forEach(form => {
     form.addEventListener("submit", async function (e) {
@@ -104,20 +123,40 @@ document.querySelectorAll(".ajax-form").forEach(form => {
         const name = form.closest(".workout-card").dataset.name;
         const day = formData.get("day_of_week");
 
-        const res = await fetch(form.action, {
-            method: "POST",
-            body: formData
-        });
+        if (!day) {
+            showToast("Please select a day");
+            return;
+        }
 
-        if (res.ok) {
+        try {
+            const res = await fetch(form.action, {
+                method: "POST",
+                body: formData,
+                credentials: "include"
+            });
 
-            button.innerText = "Added ✓";
-            button.classList.add("added");
+            if (res.status === 401) {
+                showToast("Session expired — redirecting to login...");
+                setTimeout(() => {
+                    window.location.href = "/login?expired=1";
+                }, 1500);
+                return;
+            }
 
-            saved[name] = true;
-            localStorage.setItem("savedExercises", JSON.stringify(saved));
+            if (res.ok) {
+                button.innerText = "Added ✓";
+                button.classList.add("added");
+                button.disabled = true;
 
-            showToast(`Added to ${day} ✓`);
+                saved[name] = true;
+                localStorage.setItem("savedExercises", JSON.stringify(saved));
+
+                showToast(`Added to ${day} ✓`);
+            } else {
+                showToast("Something went wrong");
+            }
+        } catch (err) {
+            showToast("Network error");
         }
     });
 });

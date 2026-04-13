@@ -26,9 +26,9 @@ def browse_page(
 ):
     
     if muscle or type:
+        exercises = search_exercises(muscle=muscle, exercise_type=type)
         print(f"Total exercises found: {len(exercises)}")
         print(f"First few exercises: {exercises[:3] if exercises else 'None'}")
-        exercises = search_exercises(muscle=muscle, exercise_type=type)
 
     else:
         muscles = [

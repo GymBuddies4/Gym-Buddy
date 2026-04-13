@@ -4,27 +4,148 @@
 <script src="{{ url_for('static', path='js/app.js')}}"></script>
 {% endblock %}
 
+{% block additional_styles %}
+<style>
+.welcome-page {
+    min-height: 100vh;
+    background-image: url('/static/img/download.jpg');
+    background-size: cover;
+    background-position: center;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 3rem 2rem;
+}
+
+.welcome-page::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, rgba(5, 4, 2, 0.75) 0%, rgba(15, 11, 4, 0.65) 100%);
+    z-index: 0;
+}
+
+.welcome-content {
+    position: relative;
+    z-index: 1;
+    max-width: 800px;
+    text-align: center;
+    color: #F5F2EC;
+}
+
+.welcome-top {
+    font-size: 1rem;
+    font-weight: 400;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: rgba(245, 242, 236, 0.7);
+    margin-bottom: 0.25rem;
+}
+
+.welcome-title {
+    font-size: 4rem;
+    font-weight: 700;
+    color: var(--gold);
+    text-shadow: 0 4px 20px rgba(201, 168, 76, 0.4);
+    letter-spacing: 0.05em;
+    margin-bottom: 1.5rem;
+    line-height: 1.1;
+}
+
+.welcome-tagline {
+    font-size: 1.1rem;
+    color: rgba(245, 242, 236, 0.85);
+    margin-bottom: 2.5rem;
+    font-style: italic;
+}
+
+.welcome-divider {
+    width: 60px;
+    height: 2px;
+    background: var(--gold);
+    margin: 0 auto 2.5rem;
+}
+
+.welcome-cards {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.25rem;
+    margin-bottom: 2.5rem;
+}
+
+.welcome-card {
+    background: rgba(255, 255, 255, 0.07);
+    border: 1px solid rgba(201, 168, 76, 0.25);
+    border-radius: 16px;
+    padding: 1.5rem;
+    text-align: left;
+    text-decoration: none;
+    transition: all 0.2s ease;
+}
+
+.welcome-card:hover {
+    background: rgba(201, 168, 76, 0.12);
+    border-color: var(--gold);
+    transform: translateY(-2px);
+}
+
+.welcome-card-title {
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--gold);
+    margin-bottom: 0.5rem;
+}
+
+.welcome-card-text {
+    font-size: 0.875rem;
+    color: rgba(245, 242, 236, 0.7);
+    line-height: 1.6;
+}
+
+.welcome-quote {
+    font-size: 0.95rem;
+    color: rgba(245, 242, 236, 0.6);
+    line-height: 1.8;
+    margin-bottom: 1.5rem;
+}
+
+.welcome-final {
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--gold);
+    letter-spacing: 0.05em;
+}
+</style>
+{% endblock %}
 
 {% block subpage_content %}
+<div class="welcome-page">
+    <div class="welcome-content">
+        <div class="welcome-top">Welcome to</div>
+        <div class="welcome-title">GYM BUDDY</div>
+        <div class="welcome-tagline">This isn't just a workout app, it's your partner in progress.</div>
+        <div class="welcome-divider"></div>
 
-    <div class="container" id="content">
-        <div class="row">
-            <p>
-                This is table is rendered on the Client. JavaScript code requests the data from <a href="/api/users">/api/users</a> and writes it to this page.
-            </p>
+        <div class="welcome-cards">
+            <a href="/browse" class="welcome-card">
+                <div class="welcome-card-title">Browse Workouts</div>
+                <div class="welcome-card-text">Explore new workouts, challenge your limits, and keep things fresh. Growth happens when you step outside your comfort zone.</div>
+            </a>
+            <a href="/my-workout" class="welcome-card">
+                <div class="welcome-card-title">My Workouts</div>
+                <div class="welcome-card-text">Your plan, your pace. Stay organized, stay consistent, and watch your progress stack up day by day.</div>
+            </a>
         </div>
-        <div class="row">
-            <table class="table table-striped">
-                <thead>
-                  <tr>
-                    <th>Id</th><th>Username</th>
-                  </tr>
-                </thead>
-                <tbody id="result">
-                
-                <tbody>
-            </table>
+
+        <div class="welcome-quote">
+            Every time you open Gym Buddy, you're choosing to show up for yourself.<br>
+            Whether you're building strength, improving endurance, or just getting started, every rep counts.<br><br>
+            Remember: You don't need motivation every day, you need discipline.<br>
+            And on the days discipline feels hard… Gym Buddy's got your back.
         </div>
+
+        <div class="welcome-final">Start small. Stay consistent. Become unstoppable.</div>
     </div>
-
+</div>
 {% endblock %}

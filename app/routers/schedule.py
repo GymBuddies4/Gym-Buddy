@@ -65,3 +65,9 @@ async def delete_from_schedule(
     except Exception:
         pass
     return RedirectResponse(url=request.url_for("my_workout_view"), status_code=status.HTTP_303_SEE_OTHER)
+
+@router.get("/my-workout/list")
+async def get_my_workout_list(user: AuthDep, db: SessionDep):
+    repo = ScheduleRepository(db)
+    schedules = repo.get_by_user(user.id)
+    return [s.exercise_name.lower() for s in schedules]

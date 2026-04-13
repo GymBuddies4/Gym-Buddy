@@ -26,6 +26,8 @@ def browse_page(
 ):
     
     if muscle or type:
+        print(f"Total exercises found: {len(exercises)}")
+        print(f"First few exercises: {exercises[:3] if exercises else 'None'}")
         exercises = search_exercises(muscle=muscle, exercise_type=type)
 
     else:
@@ -57,6 +59,10 @@ def browse_page(
         exercises = unique_exercises
 
     exercises = filter_exercises(exercises, q)
+
+    if not q:  
+        all_names = [ex["name"] for ex in exercises]
+        print(f"Available exercises: {sorted(set(all_names))[:20]}")
 
     return templates.TemplateResponse(
         request=request,

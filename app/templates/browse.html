@@ -33,7 +33,7 @@
     <!-- Cards -->
     <div class="workout-grid">
         {% for exercise in exercises %}
-        <div class="workout-card" data-name="{{ exercise.name|lower }}">
+        <div class="workout-card" data-name="{{ exercise.name|lower|trim }}">
 
             <div class="card-top">
                 <div>🏋️</div>
@@ -87,22 +87,22 @@
 let saved = {};
 
 async function loadSavedState() {
+    saved = {};
+    
     try {
-        const res = await fetch("/my-workout/list");
+        const res = await fetch("/my-workout/list?t=" + Date.now());
         if (res.ok) {
             const savedNames = await res.json();
+            console.log("Backend says you have:", savedNames); // Debug line
             savedNames.forEach(name => {
-                saved[name] = true;
+                saved[name.trim()] = true;
             });
-        } else {
-            localStorage.removeItem("savedExercises");
         }
     } catch (e) {
-        saved = JSON.parse(localStorage.getItem("savedExercises") || "{}");
     }
 
     document.querySelectorAll(".workout-card").forEach(card => {
-        const name = card.dataset.name;
+        const name = (card.dataset.name || "").trim();
         if (saved[name]) {
             const btn = card.querySelector(".add-workout-btn");
             btn.innerText = "Added ✓";
@@ -148,8 +148,7 @@ document.querySelectorAll(".ajax-form").forEach(form => {
                 button.classList.add("added");
                 button.disabled = true;
 
-                saved[name] = true;
-                localStorage.setItem("savedExercises", JSON.stringify(saved));
+                saved[name.trim()] = true;
 
                 showToast(`Added to ${day} ✓`);
             } else {

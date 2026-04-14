@@ -30,6 +30,13 @@ class ScheduleRepository:
                 Schedule.day_of_week == day_of_week
             )
         ).all()
+
+    def get_one_by_user(self, schedule_id: int, user_id: int):
+        statement = select(Schedule).where(
+            Schedule.id == schedule_id,
+            Schedule.user_id == user_id
+        )
+        return self.db.exec(statement).first()    
     
     def delete(self, schedule_id: int, user_id: int):
         schedule = self.db.exec(

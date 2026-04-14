@@ -31,6 +31,7 @@
               {% if workout.sets %}{{ workout.sets }} sets{% endif %}{% if workout.sets and workout.reps %} · {% endif %}{% if workout.reps %}{{ workout.reps }} reps{% endif %}{% if workout.muscle %} · {{ workout.muscle }}{% endif %}
             </div>
           </div>
+          <a href="/my-workout/{{ workout.id }}" class="btn btn-secondary">View</a>
           <form method="POST" action="/delete-workout/{{ workout.id }}">
             <button type="submit" class="btn btn-danger btn-sm">Delete</button>
           </form>

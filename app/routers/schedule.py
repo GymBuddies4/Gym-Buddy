@@ -28,6 +28,32 @@ async def my_workout_view(request: Request, user: AuthDep, db: SessionDep):
         context = {"user": user, "schedule": schedule}
     )
 
+@router.get("/my-workout/{schedule_id}", response_class=HTMLResponse)
+async def workout_detail_view(
+    request: Request,
+    schedule_id: int,
+    user: AuthDep,
+    db: SessionDep,
+):
+    repo = ScheduleRepository(db)
+    workout = repo.get_one_by_user(schedule_id, user.id)
+
+    if not workout:
+        return RedirectResponse(
+            url=request.url_for("my_workout_view"),
+            status_code=status.HTTP_303_SEE_OTHER
+        )
+
+    return templates.TemplateResponse(
+        request=request,
+        name="workout_detail.html",
+        context={
+            "request": request,
+            "user": user,
+            "workout": workout,
+        }
+    )    
+
 @router.post("/my-workout/add", response_class=HTMLResponse)
 async def add_to_schedule(
     request: Request,

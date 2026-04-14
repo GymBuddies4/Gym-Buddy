@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="page-container">
+    <div class="page-header">
+        <h1>{{ workout.exercise_name }}</h1>
+        <p>Workout details</p>
+    </div>
+
+    <div class="workout-card">
+        <p><strong>Exercise:</strong> {{ workout.exercise_name }}</p>
+        <p><strong>Day:</strong> {{ workout.day_of_week }}</p>
+        <p><strong>Muscle:</strong> {{ workout.muscle or "Not specified" }}</p>
+        <p><strong>Sets:</strong> {{ workout.sets or "Not specified" }}</p>
+        <p><strong>Reps:</strong> {{ workout.reps or "Not specified" }}</p>
+    </div>
+
+    <div class="workout-actions">
+        <a href="/my-workout">Back to My Workout</a>
+    </div>
+</div>
+
+{% endblock %}

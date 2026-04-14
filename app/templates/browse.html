@@ -33,6 +33,9 @@
     <!-- Cards -->
     <div class="workout-grid">
         {% for exercise in exercises %}
+
+        {% set is_added = exercise.name.lower().strip() in added_exercise_names %}
+
         <div class="workout-card" data-name="{{ exercise.name|lower|trim }}">
 
             <div class="card-top">
@@ -53,7 +56,7 @@
             <form method="post" action="/my-workout/add" class="ajax-form">
                 <input type="hidden" name="exercise_name" value="{{ exercise.name }}">
 
-                <select name="day_of_week" required>
+                <select name="day_of_week" required {% if is_added %}disabled{% endif %}>
                     <option value="">Day</option>
                     <option>Sunday</option>
                     <option>Monday</option>
@@ -65,12 +68,12 @@
                 </select>
 
                 <div class="form-row">
-                    <input type="number" name="sets" placeholder="Sets">
-                    <input type="text" name="reps" placeholder="Reps">
+                    <input type="number" name="sets" placeholder="Sets" {% if is_added %}disabled{% endif %}>
+                    <input type="text" name="reps" placeholder="Reps" {% if is_added %}disabled{% endif %}>
                 </div>
 
-                <button type="submit" class="add-workout-btn">
-                    Add to Routine
+                <button type="submit" class="add-workout-btn {% if is_added %}added{% endif %}" {% if is_added %}disabled{% endif %}>
+                    {% if is_added %}Added ✓{% else %}Add to Routine{% endif %}
                 </button>
             </form>
 
@@ -84,43 +87,12 @@
 
 <script>
 
-let saved = {};
-
-async function loadSavedState() {
-    saved = {};
-    
-    try {
-        const res = await fetch("/my-workout/list?t=" + Date.now());
-        if (res.ok) {
-            const savedNames = await res.json();
-            console.log("Backend says you have:", savedNames); // Debug line
-            savedNames.forEach(name => {
-                saved[name.trim()] = true;
-            });
-        }
-    } catch (e) {
-    }
-
-    document.querySelectorAll(".workout-card").forEach(card => {
-        const name = (card.dataset.name || "").trim();
-        if (saved[name]) {
-            const btn = card.querySelector(".add-workout-btn");
-            btn.innerText = "Added ✓";
-            btn.classList.add("added");
-            btn.disabled = true;
-        }
-    });
-}
-
-loadSavedState();
-
 document.querySelectorAll(".ajax-form").forEach(form => {
     form.addEventListener("submit", async function (e) {
         e.preventDefault();
 
         const button = form.querySelector(".add-workout-btn");
         const formData = new FormData(form);
-        const name = form.closest(".workout-card").dataset.name;
         const day = formData.get("day_of_week");
 
         if (!day) {
@@ -148,7 +120,8 @@ document.querySelectorAll(".ajax-form").forEach(form => {
                 button.classList.add("added");
                 button.disabled = true;
 
-                saved[name.trim()] = true;
+                form.querySelector("select").disabled = true;
+                form.querySelectorAll("input[type=number], input[type=text]").forEach(i => i.disabled = true);
 
                 showToast(`Added to ${day} ✓`);
             } else {
@@ -259,6 +232,10 @@ select, input {
     border-radius: 6px;
 }
 
+select:disabled, input:disabled {
+    opacity: 0.4;
+}
+
 .form-row {
     display: flex;
     gap: 5px;
@@ -272,11 +249,17 @@ select, input {
     padding: 8px;
     border-radius: 8px;
     font-weight: bold;
+    cursor: pointer;
 }
 
 .add-workout-btn.added {
     background: #28a745;
     color: white;
+    cursor: default;
+}
+
+.add-workout-btn:disabled {
+    cursor: default;
 }
 
 #toast {

@@ -24,9 +24,7 @@
         <li class="schedule-workout-item">
           <span class="schedule-workout-icon">🏋️</span>
           <div>
-            {# ✅ Fixed: exercise_name not name #}
             <div class="schedule-workout-name">{{ workout.exercise_name }}</div>
-            {# ✅ Fixed: muscle not category #}
             <div class="schedule-workout-meta">
               {% if workout.sets %}{{ workout.sets }} sets{% endif %}{% if workout.sets and workout.reps %} · {% endif %}{% if workout.reps %}{{ workout.reps }} reps{% endif %}{% if workout.muscle %} · {{ workout.muscle }}{% endif %}
             </div>

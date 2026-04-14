@@ -3,6 +3,7 @@ from fastapi.responses import HTMLResponse, RedirectResponse
 from app.dependencies import SessionDep
 from app.dependencies.auth import AuthDep
 from app.repositories.schedule import ScheduleRepository
+from app.services.exercise_service import search_exercises
 from app.models.schedule import Schedule
 from . import router, templates
 

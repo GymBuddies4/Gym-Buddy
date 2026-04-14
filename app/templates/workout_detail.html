@@ -1,23 +1,201 @@
 {% extends "base.html" %}
 {% block content %}
 
-<div class="page-container">
-    <div class="page-header">
-        <h1>{{ workout.exercise_name }}</h1>
-        <p>Workout details</p>
+<style>
+    .view-container {
+        max-width: 700px;
+        margin: 0 auto;
+        padding: 60px 24px 100px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .exercise-name {
+        font-size: 2.6rem;
+        font-weight: 800;
+        color: #d4af37;
+        text-align: center;
+        text-transform: capitalize;
+        letter-spacing: -1px;
+        line-height: 1.2;
+        margin-bottom: 12px;
+        text-shadow:
+            0 0 10px rgba(212, 175, 55, 0.5),
+            0 0 30px rgba(212, 175, 55, 0.3),
+            0 0 60px rgba(212, 175, 55, 0.15),
+            0 0 100px rgba(212, 175, 55, 0.08);
+        animation: glowPulse 3s ease-in-out infinite alternate;
+    }
+
+    @keyframes glowPulse {
+        0% {
+            text-shadow:
+                0 0 10px rgba(212, 175, 55, 0.4),
+                0 0 30px rgba(212, 175, 55, 0.2),
+                0 0 60px rgba(212, 175, 55, 0.1);
+        }
+        100% {
+            text-shadow:
+                0 0 15px rgba(212, 175, 55, 0.7),
+                0 0 40px rgba(212, 175, 55, 0.4),
+                0 0 80px rgba(212, 175, 55, 0.2),
+                0 0 120px rgba(212, 175, 55, 0.1);
+        }
+    }
+
+    .gold-divider {
+        width: 80px;
+        height: 2px;
+        background: linear-gradient(90deg, transparent, #d4af37, transparent);
+        margin: 20px 0 36px;
+        border-radius: 2px;
+    }
+
+    .exercise-description {
+        font-size: 1.05rem;
+        color: #a0a0a0;
+        text-align: center;
+        line-height: 1.7;
+        max-width: 560px;
+        margin-bottom: 44px;
+        font-weight: 300;
+    }
+
+    .info-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 16px;
+        width: 100%;
+        margin-bottom: 48px;
+    }
+
+    .info-card {
+        background: linear-gradient(145deg, rgba(255,255,255,0.04), rgba(255,255,255,0.01));
+        border: 1px solid rgba(255, 255, 255, 0.06);
+        border-radius: 16px;
+        padding: 24px;
+        text-align: center;
+        transition: all 0.3s ease;
+    }
+
+    .info-card:hover {
+        border-color: rgba(212, 175, 55, 0.2);
+        background: linear-gradient(145deg, rgba(212, 175, 55, 0.05), rgba(212, 175, 55, 0.01));
+        transform: translateY(-2px);
+    }
+
+    .info-card .label {
+        font-size: 0.75rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 1.5px;
+        color: #666;
+        margin-bottom: 10px;
+    }
+
+    .info-card .value {
+        font-size: 1.35rem;
+        font-weight: 700;
+        color: #f0f0f0;
+        text-transform: capitalize;
+    }
+
+    .info-card .value.gold {
+        color: #d4af37;
+    }
+
+    .info-card .value.dim {
+        color: #666;
+        font-style: italic;
+        font-weight: 400;
+        font-size: 1rem;
+    }
+
+    .back-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        padding: 14px 36px;
+        background: transparent;
+        border: 1px solid rgba(212, 175, 55, 0.3);
+        color: #d4af37;
+        font-family: 'Outfit', sans-serif;
+        font-size: 0.95rem;
+        font-weight: 600;
+        border-radius: 12px;
+        cursor: pointer;
+        text-decoration: none;
+        transition: all 0.3s ease;
+    }
+
+    .back-btn:hover {
+        background: rgba(212, 175, 55, 0.1);
+        border-color: rgba(212, 175, 55, 0.5);
+        transform: translateY(-1px);
+        box-shadow: 0 4px 20px rgba(212, 175, 55, 0.1);
+    }
+
+    .back-btn .arrow {
+        font-size: 1.2rem;
+        transition: transform 0.3s ease;
+    }
+
+    .back-btn:hover .arrow {
+        transform: translateX(-3px);
+    }
+
+    @media (max-width: 500px) {
+        .exercise-name { font-size: 1.9rem; }
+        .info-grid { grid-template-columns: 1fr; }
+    }
+</style>
+
+<div class="view-container">
+
+    <h1 class="exercise-name">{{ workout.exercise_name }}</h1>
+
+    <div class="gold-divider"></div>
+
+    {% if description %}
+    <p class="exercise-description">{{ description }}</p>
+    {% else %}
+    <p class="exercise-description">No description available for this exercise.</p>
+    {% endif %}
+
+    <div class="info-grid">
+
+        <div class="info-card">
+            <div class="label">Day</div>
+            <div class="value gold">{{ workout.day_of_week }}</div>
+        </div>
+
+        <div class="info-card">
+            <div class="label">Muscle Group</div>
+            {% if workout.muscle and workout.muscle != "Not specified" %}
+            <div class="value">{{ workout.muscle }}</div>
+            {% else %}
+            <div class="value dim">Not specified</div>
+            {% endif %}
+        </div>
+
+        <div class="info-card">
+            <div class="label">Sets</div>
+            <div class="value gold">{{ workout.sets or "Not specified" }}</div>
+        </div>
+
+        <div class="info-card">
+            <div class="label">Reps</div>
+            <div class="value gold">{{ workout.reps or "Not specified" }}</div>
+        </div>
+
     </div>
 
-    <div class="workout-card">
-        <p><strong>Exercise:</strong> {{ workout.exercise_name }}</p>
-        <p><strong>Day:</strong> {{ workout.day_of_week }}</p>
-        <p><strong>Muscle:</strong> {{ workout.muscle or "Not specified" }}</p>
-        <p><strong>Sets:</strong> {{ workout.sets or "Not specified" }}</p>
-        <p><strong>Reps:</strong> {{ workout.reps or "Not specified" }}</p>
-    </div>
+    <a href="/my-workout" class="back-btn">
+        <span class="arrow">←</span>
+        Back to My Workout
+    </a>
 
-    <div class="workout-actions">
-        <a href="/my-workout">Back to My Workout</a>
-    </div>
 </div>
 
 {% endblock %}
